@@ -82,10 +82,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 // On first load, show home view
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
-  homeHtmlUrl,
-  function (responseText) {
-    document.querySelector("#main-content")
-      .innerHTML = responseText;
+  allCategoriesUrl,
+  function (categories) {
+      // document.querySelector("#main-content").innerHTML = responseText;
+      buildAndShowHomeHTML(categories);
   }, // ***** <---- TODO: STEP 1: Substitute [...] ******
   true); // Explicitely setting the flag to get JSON from server processed into an object literal
 });
@@ -94,8 +94,9 @@ $ajaxUtils.sendGetRequest(
 
 // Builds HTML for the home page based on categories array
 // returned from the server.
-/*function buildAndShowHomeHTML (categories) {
-
+function buildAndShowHomeHTML(categories) {
+   
+    var  randcategory = chooseRandomCategory(categories);
   // Load home snippet page
   $ajaxUtils.sendGetRequest(
     homeHtmlUrl,
@@ -104,8 +105,13 @@ $ajaxUtils.sendGetRequest(
       // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
       // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
       // variable's name implies it expects.
-      // var chosenCategoryShortName = ....
+        // var chosenCategoryShortName = ....
+      
+       
+      
+        var chosenCategoryShortName = randcategory;
 
+           
 
       // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
       // chosen category from STEP 2. Use existing insertProperty function for that purpose.
@@ -119,7 +125,14 @@ $ajaxUtils.sendGetRequest(
       // it into the home html snippet.
       //
       // var homeHtmlToInsertIntoMainPage = ....
+        var homeHtmlToInsertIntoMainPage = homeHtml;
 
+        var randomCategoryShortName = chosenCategoryShortName.short_name;
+        homeHtmlToInsertIntoMainPage =
+          insertProperty(homeHtmlToInsertIntoMainPage, "randomCategoryShortName", "'"+randomCategoryShortName+"'");
+
+        document.querySelector("#main-content")
+         .innerHTML = homeHtmlToInsertIntoMainPage;
 
       // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
       // Use the existing insertHtml function for that purpose. Look through this code for an example
@@ -127,7 +140,7 @@ $ajaxUtils.sendGetRequest(
       // ....
 
     },
-    false); // False here because we are getting just regular HTML from the server, so no need to process JSON.*/
+    false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
 }
 
 
